@@ -1,19 +1,24 @@
 import React from 'react'
 import { useRoutes } from 'react-router-dom'
-import { LoginPage, SignUpPage } from '../pages'
+import { HomePage, LoginPage, SignUpPage } from '../pages'
 
 export const RoutesComponent = () => {
-  return (
-    <div>{useRoutes([
-     {
-        path: "/login",
-        element: <LoginPage />
-     } ,
-     {
-        path: "/signup",
-        element: <SignUpPage />
-     }
+    return (
+        <div>{useRoutes([
+            {
+                path: "/login",
+                element: <LoginPage />
+            },
+            {
+                path: "/signup",
+                element: <SignUpPage />
+            },
 
-    ])}</div>
-  )
+            //sheicvleba
+            {
+                path: "/",
+                element: <HomePage />
+            }
+        ])}</div>
+    )
 }
