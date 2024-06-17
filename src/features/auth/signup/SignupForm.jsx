@@ -4,6 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signupValidationSchema } from './signupValidation';
 import { FormConteiner, Input } from '../../../components/atom';
 import { Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { authenticateUser } from '../../../redux/slices/userslice';
+import { useUser } from '../../../hooks';
 
 export const SignupForm = () => {
   const {
@@ -15,7 +18,12 @@ export const SignupForm = () => {
     resolver: yupResolver(signupValidationSchema),
   });
 
+  const {loading} = useUser()
+
+const dispatch = useDispatch()
+
 const onSubmit= (data) => {
+  dispatch(authenticateUser({formValues: data, isLogin: false}))
   console.log("data", data);
 } 
 
@@ -102,7 +110,7 @@ const onSubmit= (data) => {
             }}
             />
          
-            <Button disabled={!isValid } onClick={handleSubmit(onSubmit)}>Sign Up</Button>
+            <Button disabled={!isValid || loading } onClick={handleSubmit(onSubmit)}>Sign Up</Button>
     </FormConteiner>
   );
 };

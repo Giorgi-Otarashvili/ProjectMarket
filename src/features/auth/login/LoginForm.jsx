@@ -5,6 +5,9 @@ import { loginValidationSchema } from './loginValidation'
 import { FormConteiner } from '../../../components/atom/FormConteiner'
 import { Input } from '../../../components/atom/input'
 import { Button } from '../../../components/atom'
+import { useDispatch } from 'react-redux'
+import { authenticateUser } from '../../../redux/slices/userslice'
+import { useUser } from '../../../hooks'
 
 export const LoginForm = () => {
     const {
@@ -15,19 +18,29 @@ export const LoginForm = () => {
             mode: "onChange",
             resolver: yupResolver(loginValidationSchema),
             })
-const onSubmit = (data) => {
+
+            const {loading} = useUser()
+
+            const dispatch = useDispatch()
+
+            const onSubmit = (data) => {
+                dispatch(authenticateUser({formValues: data, isLogin: true}))
 console.log(data);
 }
+
 
     return (
         <div>
             <FormConteiner>
-                <Controller name="email" control={control} defaultValue=''
+                <Controller 
+                name="email" 
+                control={control} 
+                defaultValue=''
                     render={({ field }) => {
                         const { name, onChange } = field
                         return <Input
                             name={name}
-                            onChange={onchange}
+                            onChange={onChange}
                             label="Email"
                             error={Boolean(errors.email)}
                             helperText={errors.email?.message}
@@ -49,7 +62,7 @@ console.log(data);
                             helperText={errors.password?.message}
                         />
                     }} />
-                    <Button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Log in</Button>
+                    <Button disabled={!isValid || loading} onClick={handleSubmit(onSubmit)}>Log in</Button>
             </FormConteiner>
         </div>
     )
